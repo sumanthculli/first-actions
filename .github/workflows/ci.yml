@@ -9,6 +9,13 @@
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v2
+        - name: Cache node mdoules
+          uses: actions/cache@v1
+          with:
+           path: ${{ steps.npm-cache.outputs.dir }}
+           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+           restore-keys: |
+             ${{ runner.os }}-node-
         - name: Use Node jobs
           uses: actions/setup-node@v1
           with:
@@ -19,4 +26,4 @@
             ci : true
         - name: On build 
           if: github.event_name == 'push'
-          run: npm run build          
+          run: npm run build         
