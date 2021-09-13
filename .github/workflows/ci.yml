@@ -1,1 +1,17 @@
-name: Actions CI
+  name: Actions CI
+  on:
+    pull_request:
+      branches: [develop]
+  jobs:
+    build: 
+      runs-on: ubuntu-latest
+      steps:
+        - uses: action/checkout@v2
+        - name: Use Node jobs
+          uses: actions/setup-node@v1
+          with:
+            node-version: "12.x"
+        - run: npm ci
+        - run: npm test -- --coverage
+          env:
+            ci : true
